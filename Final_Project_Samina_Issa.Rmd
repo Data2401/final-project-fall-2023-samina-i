@@ -28,3 +28,136 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+#using this for data manipulation
+library(dplyr)
+#using this to tidy up the data
+library(tidyverse)
+#using for visual data
+library(ggplot2)
+
+
+```
+
+
+```{r}
+# Read CSV file from a subfolder
+
+LITdata <- read_csv("Literacy/Adults_15YrsAndUp.csv")
+
+LIT_rate_data <- read_csv("Literacy/Literacy rates.csv")
+
+
+LITdata
+LIT_rate_data
+
+LIT_rate_data %>% arrange(desc(Year), desc(Country))
+
+```
+
+
+
+```{r}
+#Literacy rate Country Table
+table(LIT_rate_data$Country)
+
+
+# rate for female in each region
+f <- LIT_rate_data %>% 
+        filter(Gender == "female") %>% 
+        ggplot(aes(x = Region, y = `Literacy rate`))
+
+f + 
+  geom_col() + 
+  coord_flip() 
+
+# rate for male in each region
+m <- LIT_rate_data %>% 
+        filter(Gender == "male") %>% 
+        ggplot(aes(x = Region, y = `Literacy rate`))
+
+m + 
+  geom_col() + 
+  coord_flip() 
+
+```
+
+```{r}
+p <- ggplot(LIT_rate_data, aes(x = LIT_rate_data$`Year`, y = LIT_rate_data$`Literacy rate`, color = LIT_rate_data$Region)) 
+p <- p +  geom_point() +
+  facet_wrap(~ Region)
+
+p
+```
+
+```{r}
+ggplot(data = LIT_rate_data) + 
+  geom_bar(mapping = aes(x = Region, fill = Gender))+ coord_flip()
+
+```
+
+
+```{r}
+ggplot(LIT_rate_data %>% filter(Gender == "female"), aes(x = Year, y = `Literacy rate`)) + geom_line() + geom_point()
+```
+
+
+
+```{r}
+
+```
+
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
