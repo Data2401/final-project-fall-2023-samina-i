@@ -36,6 +36,8 @@ Growing up, many people in my community, neighborhood and family were not able t
 - library(plotly): using for creating interactive web-based graphs 
 
 ```{r message = FALSE}
+#install.packages("tidyverse")
+
 #using this for data manipulation
 library(dplyr)
 #using this to tidy up the data
@@ -45,6 +47,7 @@ library(ggplot2)
 #using for interactive graphs
 library(plotly)
 
+
 ```
 
 # Reading in Data 
@@ -52,10 +55,10 @@ library(plotly)
 ```{r message = FALSE}
 # Read CSV file from a subfolder
 
-LIT_rate_data <- read_csv("Literacy/Literacy rates.csv")
+LIT_rate_data <- read_csv("Literacy rates.csv")
 glimpse(LIT_rate_data)
 
-LITdata <- read_csv("Literacy/Adults_15YrsAndUp.csv")
+LITdata <- read_csv("Adults_15YrsAndUp.csv")
 glimpse(LITdata)
 
 
@@ -68,8 +71,10 @@ glimpse(LITdata)
 
 LIT_rate_data %>% 
   group_by(Country) %>% 
-  summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
-  arrange(desc(mean_lit_rate))
+  summarise(mean_lit_rate = mean(`Literacy rate`)) %>% arrange(desc(mean_lit_rate))
+
+
+
 
 ```
 # Countries with Lowest Literacy rate
@@ -85,6 +90,39 @@ LIT_rate_data %>%
 ```
 
 
+# Countries with High Female Literacy rate
+
+```{r message = FALSE}
+
+LITdata %>% mutate(diff = Male - Female) %>% arrange(diff) %>% select(Country, Male, Female, diff)
+
+```
+# Countries with Low Female Literacy rate
+
+```{r message = FALSE}
+
+LITdata %>% mutate(diff = Male - Female) %>% arrange(-diff) %>% select(Country, Male, Female, diff)
+
+
+
+```
+
+# Literacy rate by Age
+
+```{r message = FALSE}
+
+p <- ggplot(data = LIT_rate_data) + 
+  geom_bar(mapping = aes(x = Year, fill = Age), position = "dodge")
+
+ggplotly(p)
+
+p <- ggplot(data = LIT_rate_data) + 
+  geom_col(mapping = aes(x = Age, y = `Literacy rate`, fill = Age))
+
+ggplotly(p)
+
+```
+
 # Male & Female Literacy rate by region
 
 
@@ -96,7 +134,7 @@ LIT_rate_data %>%
 # rate for female in each region
 f <- LIT_rate_data %>% 
         filter(Gender == "female") %>% 
-        ggplot(aes(x = Region, y = `Literacy rate`))
+        ggplot(aes(x = reorder(Region, `Literacy rate`), y = `Literacy rate`))
 
 f + 
   geom_col() + 
@@ -111,28 +149,48 @@ m <- LIT_rate_data %>%
 
 m
 
+
+LIT_rate_data %>% 
+  group_by(Region) %>% 
+  summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
+  arrange(-mean_lit_rate)
+
+
 ```
 
+
+# Measuring the progress of a Region's literacy rate over time
+
 ```{r message = FALSE}
-p <- ggplot(LIT_rate_data, aes(x = LIT_rate_data$`Year`, y = LIT_rate_data$`Literacy rate`, color = LIT_rate_data$Region)) 
-p <- p +  geom_point() +
+
+p <- LIT_rate_data %>%
+  group_by(Region, Year) %>%
+  summarise(mean_literacy = mean(`Literacy rate`, na.rm = TRUE)) %>%
+  ggplot(aes(x = Year, y = mean_literacy, color = Region)) +
+  geom_line() +
   facet_wrap(~ Region)
 
-p
+ggplotly(p)
+
 ```
 
+# Region's literacy rate by Gender
 ```{r message = FALSE}
-ggplot(data = LIT_rate_data) + 
+p <- ggplot(data = LIT_rate_data %>%
+         filter(Gender %in% c("male", "female"))) + 
   geom_bar(mapping = aes(x = Region, fill = Gender))+ coord_flip()
 
-```
+ggplotly(p)
 
+
+```
+# ---
 
 ```{r message = FALSE}
 ggplot(LIT_rate_data %>% filter(Gender == "female"), aes(x = Year, y = `Literacy rate`)) + geom_line() + geom_point()
 ```
 
-# Measuring the progress of a country's literacy rate over time
+# ...Measuring the progress of a country's literacy rate over time
 
 ```{r message = FALSE}
 jgender <- c("female", "male")
@@ -169,6 +227,7 @@ p <- ggplot(LIT_rate_data %>% filter(Gender == "female", Region == "Sub-Saharan 
 ggplotly(p)
 ```
 
+# Summary
 
 
 ```{r message = FALSE}
