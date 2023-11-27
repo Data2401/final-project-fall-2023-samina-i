@@ -1,66 +1,96 @@
 ---
-title: "FinalProject_SI"
-author: "Samina Issa"
-date: "2023-11-10"
-output: html_document
+title: "Youth & Adult Literacy Rates from 2010 to 2018"
+author: "Samina Issa - Fall 2023"
+date: "2023-11-29"
+output: slidy_presentation
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = F)
 ```
 
-## R Markdown
+# Introduction
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+[Youth & Adult Literacy Rates Datasets Link](https://www.kaggle.com/datasets/thedevastator/youth-adult-literacy-rates-in-2019/data)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
-```
+The data is a CSV from Kaggle. This dataset contains data on literacy rates for youth and adults in various regions and countries.  
 
-## Including Plots
+# Questions:
+1. 
+2. 
+3. 
+4.
 
-You can also embed plots, for example:
+## Why Literacy Project?
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+Growing up, many people in my community, neighborhood and family were not able to read and write. So I wanted to see the literacy rate in recent years and picked it for the project
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# Library Loading 
+- library(dplyr): using for data manipulation
 
-```{r}
+- library(tidyverse): using to transform and better present data
+
+- library(ggplot2): using for data visualization and plotting charts
+
+- library(plotly): using for creating interactive web-based graphs 
+
+```{r message = FALSE}
 #using this for data manipulation
 library(dplyr)
 #using this to tidy up the data
 library(tidyverse)
 #using for visual data
 library(ggplot2)
-
+#using for interactive graphs
+library(plotly)
 
 ```
 
+# Reading in Data 
 
-```{r}
+```{r message = FALSE}
 # Read CSV file from a subfolder
 
-LITdata <- read_csv("Literacy/Adults_15YrsAndUp.csv")
-
 LIT_rate_data <- read_csv("Literacy/Literacy rates.csv")
+glimpse(LIT_rate_data)
+
+LITdata <- read_csv("Literacy/Adults_15YrsAndUp.csv")
+glimpse(LITdata)
 
 
-LITdata
-LIT_rate_data
+#LIT_rate_data %>% arrange(desc(Year), desc(Country))
 
-LIT_rate_data %>% arrange(desc(Year), desc(Country))
+```
+# Countries with Higest Literacy rate
+
+```{r message = FALSE}
+
+LIT_rate_data %>% 
+  group_by(Country) %>% 
+  summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
+  arrange(desc(mean_lit_rate))
+
+```
+# Countries with Lowest Literacy rate
+
+```{r message = FALSE}
+
+LIT_rate_data %>% 
+  group_by(Country) %>% 
+  summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
+  arrange(mean_lit_rate)
+
 
 ```
 
 
+# Male & Female Literacy rate by region
 
-```{r}
+
+```{r message = FALSE}
 #Literacy rate Country Table
-table(LIT_rate_data$Country)
+#table(LIT_rate_data$Country)
 
 
 # rate for female in each region
@@ -70,20 +100,20 @@ f <- LIT_rate_data %>%
 
 f + 
   geom_col() + 
-  coord_flip() 
+  coord_flip() + labs(title = "Female Literacy rate by region")
 
 # rate for male in each region
 m <- LIT_rate_data %>% 
         filter(Gender == "male") %>% 
-        ggplot(aes(x = Region, y = `Literacy rate`))
+        ggplot(aes(x = reorder(Region, `Literacy rate`), y = `Literacy rate`))+ 
+        geom_col() + 
+        coord_flip() + labs(title = "Male Literacy rate by region")
 
-m + 
-  geom_col() + 
-  coord_flip() 
+m
 
 ```
 
-```{r}
+```{r message = FALSE}
 p <- ggplot(LIT_rate_data, aes(x = LIT_rate_data$`Year`, y = LIT_rate_data$`Literacy rate`, color = LIT_rate_data$Region)) 
 p <- p +  geom_point() +
   facet_wrap(~ Region)
@@ -91,73 +121,85 @@ p <- p +  geom_point() +
 p
 ```
 
-```{r}
+```{r message = FALSE}
 ggplot(data = LIT_rate_data) + 
   geom_bar(mapping = aes(x = Region, fill = Gender))+ coord_flip()
 
 ```
 
 
-```{r}
+```{r message = FALSE}
 ggplot(LIT_rate_data %>% filter(Gender == "female"), aes(x = Year, y = `Literacy rate`)) + geom_line() + geom_point()
 ```
 
+# Measuring the progress of a country's literacy rate over time
+
+```{r message = FALSE}
+jgender <- c("female", "male")
+ggplot(LIT_rate_data %>% filter(Gender %in% jgender) %>% group_by(Year) %>% summarise(Lit_mean = mean(na.omit((`Literacy rate`)))), aes(x = Year, y = Lit_mean)) +
+        geom_line() + geom_point()
+
+p <- ggplot(LIT_rate_data %>% filter(Gender == "female") %>% group_by(Year) %>% summarise(Lit_mean = mean(na.omit(`Literacy rate`))), aes(x = Year, y = Lit_mean)) + geom_line() + geom_point()
+ggplotly(p)
+
+```
+
+# Comparing the literacy rates of different countries
 
 
-```{r}
+```{r message = FALSE}
+
+```
+
+# Comparing the literacy rates of different age groups in a country
+
+```{r message = FALSE}
 
 ```
 
 
 
 
-```{r}
+```{r message = FALSE}
+library(plotly)
+p <- ggplot(LIT_rate_data %>% filter(Gender == "male") %>% group_by(Year, Region) %>% summarise(Lit_mean = mean(na.omit(`Literacy rate`))), aes(x = Year, y = Lit_mean, color = Region)) + geom_line() + geom_point()
+ggplotly(p)
+
+p <- ggplot(LIT_rate_data %>% filter(Gender == "female", Region == "Sub-Saharan Africa") %>% group_by(Year, Country) %>% summarise(Lit_mean = mean(na.omit(`Literacy rate`))), aes(x = Year, y = Lit_mean, color = Country)) + geom_line() + geom_point()
+ggplotly(p)
+```
+
+
+
+```{r message = FALSE}
 
 ```
 
 
 
-```{r}
+```{r message = FALSE}
 
 ```
 
 
 
-```{r}
+```{r message = FALSE}
 
 ```
 
 
 
-```{r}
+```{r message = FALSE}
+
+```
+
+
+```{r message = FALSE}
 
 ```
 
 
 
-```{r}
-
-```
-
-
-
-```{r}
-
-```
-
-
-
-```{r}
-
-```
-
-
-```{r}
-
-```
-
-
-
-```{r}
+```{r message = FALSE}
 
 ```
