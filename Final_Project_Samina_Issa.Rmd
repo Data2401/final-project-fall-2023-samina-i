@@ -215,7 +215,7 @@ ggplotly(p)
 
 ```
 
-
+# Analysing the literacy rates of a country
 
 
 ```{r message = FALSE}
