@@ -3,30 +3,32 @@ title: "Youth & Adult Literacy Rates from 2010 to 2018"
 author: "Samina Issa - Fall 2023"
 date: "2023-11-29"
 output: slidy_presentation
+includes:
+      in_header: Pic1.jpg
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F)
 ```
 
-# Introduction
+# 1. Introduction
 
 [Youth & Adult Literacy Rates Datasets Link](https://www.kaggle.com/datasets/thedevastator/youth-adult-literacy-rates-in-2019/data)
 
 
 The data is a CSV from Kaggle. This dataset contains data on literacy rates for youth and adults in various regions and countries.  
 
-# Questions:
+# 2. Analysing:
 1. 
 2. 
 3. 
 4.
 
-## Why Literacy Project?
+## 3. Why Literacy Project?
 
 Growing up, many people in my community, neighborhood and family were not able to read and write. So I wanted to see the literacy rate in recent years and picked it for the project
 
-# Library Loading 
+# 4. Library Loading 
 - library(dplyr): using for data manipulation
 
 - library(tidyverse): using to transform and better present data
@@ -50,7 +52,7 @@ library(plotly)
 
 ```
 
-# Reading in Data 
+# 5. Reading in Data 
 
 ```{r message = FALSE}
 # Read CSV file from a subfolder
@@ -65,7 +67,7 @@ glimpse(LITdata)
 #LIT_rate_data %>% arrange(desc(Year), desc(Country))
 
 ```
-# Countries with Higest Literacy rate
+# 6. Countries with Higest Literacy rate
 
 ```{r message = FALSE}
 
@@ -77,7 +79,7 @@ LIT_rate_data %>%
 
 
 ```
-# Countries with Lowest Literacy rate
+# 7. Countries with Lowest Literacy rate
 
 ```{r message = FALSE}
 
@@ -90,14 +92,14 @@ LIT_rate_data %>%
 ```
 
 
-# Countries with High Female Literacy rate
+# 8. Countries with High Female Literacy rate
 
 ```{r message = FALSE}
 
 LITdata %>% mutate(diff = Male - Female) %>% arrange(diff) %>% select(Country, Male, Female, diff)
 
 ```
-# Countries with Low Female Literacy rate
+# 9. Countries with Low Female Literacy rate
 
 ```{r message = FALSE}
 
@@ -107,7 +109,7 @@ LITdata %>% mutate(diff = Male - Female) %>% arrange(-diff) %>% select(Country, 
 
 ```
 
-# Literacy rate by Age
+# 10. Literacy rate by Age
 
 ```{r message = FALSE}
 
@@ -123,7 +125,7 @@ ggplotly(p)
 
 ```
 
-# Male & Female Literacy rate by region
+# 11. Male & Female Literacy rate by region
 
 
 ```{r message = FALSE}
@@ -159,7 +161,7 @@ LIT_rate_data %>%
 ```
 
 
-# Measuring the progress of a Region's literacy rate over time
+# 12. Measuring the progress of a Region's literacy rate over time
 
 ```{r message = FALSE}
 
@@ -174,7 +176,18 @@ ggplotly(p)
 
 ```
 
-# Region's literacy rate by Gender
+# 13. Comparing the literacy rates of different countries of Sub-Saharan Africa Region
+
+
+```{r message = FALSE}
+
+
+
+#LIT_rate_data %>% mutate(variance = Male - Female) %>% arrange(-diff) %>% select(Country, Male, Female, diff)
+
+```
+
+# 14. Region's literacy rate by Gender
 ```{r message = FALSE}
 p <- ggplot(data = LIT_rate_data %>%
          filter(Gender %in% c("male", "female"))) + 
@@ -184,13 +197,13 @@ ggplotly(p)
 
 
 ```
-# ---
+# 15. ---
 
 ```{r message = FALSE}
 ggplot(LIT_rate_data %>% filter(Gender == "female"), aes(x = Year, y = `Literacy rate`)) + geom_line() + geom_point()
 ```
 
-# ...Measuring the progress of a country's literacy rate over time
+# 16. ...Measuring the progress of a country's literacy rate over time
 
 ```{r message = FALSE}
 jgender <- c("female", "male")
@@ -202,20 +215,20 @@ ggplotly(p)
 
 ```
 
-# Comparing the literacy rates of different countries
+# 17. Comparing the literacy rates of different countries
 
 
 ```{r message = FALSE}
 
 ```
 
-# Comparing the literacy rates of different age groups in a country
+# 18. Comparing the literacy rates of different age groups in a country
 
 ```{r message = FALSE}
 
 ```
 
-# Analysing the literacy rates of a country
+# 19. Analysing the literacy rates of a country
 
 
 ```{r message = FALSE}
@@ -227,38 +240,10 @@ p <- ggplot(LIT_rate_data %>% filter(Gender == "female", Region == "Sub-Saharan 
 ggplotly(p)
 ```
 
-# Summary
+# 20. Analysis / Summary
 
 
 ```{r message = FALSE}
 
 ```
 
-
-
-```{r message = FALSE}
-
-```
-
-
-
-```{r message = FALSE}
-
-```
-
-
-
-```{r message = FALSE}
-
-```
-
-
-```{r message = FALSE}
-
-```
-
-
-
-```{r message = FALSE}
-
-```
