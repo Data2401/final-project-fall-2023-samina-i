@@ -42,6 +42,10 @@ Growing up, many people in my community, neighborhood and family were not able t
 
 - **library(plotly):** using for creating interactive web-based graphs 
 
+- **library(knitr):** using for formatting tables 
+
+- **library(kableExtra):** using for formatting tables and manipulate table styles 
+
 ```{r message = FALSE}
 #install.packages("tidyverse")
 #install.packages("knitr")
@@ -54,12 +58,11 @@ library(tidyverse)
 library(ggplot2)
 #using for interactive graphs
 library(plotly)
-
-
+library(kableExtra)
+library(knitr)
 ```
 
 # Reading in Data 
-
 ```{r message = FALSE}
 # Read CSV file from a subfolder
 
@@ -70,8 +73,8 @@ LITdata <- read_csv("Adults_15YrsAndUp.csv")
 glimpse(LITdata)
 
 ```
-# Countries with Higest Literacy rate
 
+# Countries with Higest Literacy rate
 ```{r message = FALSE}
 
 LIT_rate_data %>% 
@@ -80,11 +83,12 @@ LIT_rate_data %>%
   arrange(desc(mean_lit_rate)) %>% 
   slice(1:10) %>%
   rename("Country Name" = Country, "Mean Literacy Rate" = mean_lit_rate) %>%
-  knitr::kable() 
+  kable("html", digits = 3) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "left") 
 
 ```
-# Countries with Lowest Literacy rate
 
+# Countries with Lowest Literacy rate
 ```{r message = FALSE}
 
 LIT_rate_data %>% 
@@ -93,14 +97,14 @@ LIT_rate_data %>%
   arrange(mean_lit_rate) %>% 
   slice(1:10) %>%
   rename("Country Name" = Country, "Mean Literacy Rate" = mean_lit_rate) %>%
-  knitr::kable()
+  kable("html", digits = 3) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "left")
 
 
 ```
 
 
 # Literacy rates of different age groups by year
-
 ```{r message = FALSE}
 
 LIT_rate_data %>%
@@ -113,7 +117,6 @@ LIT_rate_data %>%
 ```
 
 # Mean literacy rates by age group
-
 ```{r message = FALSE}
  
 
@@ -127,8 +130,6 @@ ggplotly(p)
 
 
 # Progress of a Region's literacy rate over time
-
-
 ```{r message = FALSE}
 library(plotly)
 p <- ggplot(LIT_rate_data %>% 
@@ -146,7 +147,6 @@ ggplotly(p)
 
 
 # Progress of a Region's literacy rate over time
-
 ```{r message = FALSE, fig.width=12}
 
 p <- LIT_rate_data %>%
@@ -163,7 +163,6 @@ ggplotly(p)
 
 
 # Literacy rates by country of Sub-Saharan Africa Region
-
 ```{r message = FALSE}
 library(plotly)
 
@@ -179,23 +178,21 @@ p <- ggplot(LIT_rate_data %>%
 ggplotly(p)
 ```
 
-# Literacy rates of countries of Sub-Saharan Africa Region
-
-
+# Sub-Saharan Africa Region
 ```{r message = FALSE}
 
-
-LIT_rate_data %>% 
-  filter(Region == "Sub-Saharan Africa") %>% 
-  group_by(Country, Year) %>% 
+LIT_rate_data %>%
+  filter(Region == "Sub-Saharan Africa") %>%
+  group_by(Country, Year) %>%
   summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
   rename("Country Name" = Country, "Mean Literacy Rate" = mean_lit_rate) %>%
-  knitr::kable()
+  kable("html", digits = 3) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "left") %>%
+  add_header_above(c(" " = 1, "Literacy Rate Analysis" = 2))
 
 ```
 
-# Literacy rates of  Year 2011 & 2013 of Sub-Saharan Africa Region
-
+# Literacy rates of Year 2011 & 2013 of Sub-Saharan Africa Region
 ```{r message = FALSE}
 
 
@@ -204,7 +201,8 @@ LIT_rate_data %>%
   group_by(Country, Year) %>% 
   summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
   rename("Country Name" = Country, "Mean Literacy Rate" = mean_lit_rate) %>%
-  knitr::kable()
+  kable("html", digits = 3) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "left")
 
 
 
@@ -213,14 +211,14 @@ LIT_rate_data %>%
   group_by(Country, Year) %>% 
   summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
   rename("Country Name" = Country, "Mean Literacy Rate" = mean_lit_rate) %>%
-  knitr::kable()
+  kable("html", digits = 3) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "left")
+
 
 
 ```
 
 # Literacy rates of countries of Eastern and South-Eastern Asia Region
-
-
 ```{r message = FALSE}
 
 
@@ -236,9 +234,7 @@ p <- ggplot(LIT_rate_data %>%
 ggplotly(p)
 ```
 
-# Literacy rates of countries of Eastern and South-Eastern Asia Region
-
-
+# Eastern and South-Eastern Asia Region
 ```{r message = FALSE}
 
 
@@ -247,14 +243,14 @@ LIT_rate_data %>%
   group_by(Country, Year) %>% 
   summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
   rename("Country Name" = Country, "Mean Literacy Rate" = mean_lit_rate) %>%
-  knitr::kable()
+  kable("html", digits = 3) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "left") %>%
+  add_header_above(c(" " = 1, "Literacy Rate Analysis" = 2))
 
 ```
 
 
 # Male & Female Literacy rate by region
-
-
 ```{r message = FALSE}
 
 LIT_rate_data %>%
@@ -265,7 +261,8 @@ LIT_rate_data %>%
   select(Region, male, female) %>%
   arrange(Region) %>%
   rename("Male" = male, "Female" = female) %>%
-  knitr::kable(digits = 3)
+  kable("html", digits = 3) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "left")
 
 LIT_rate_data %>% 
   filter(Gender %in% c("male", "female")) %>% 
@@ -280,25 +277,30 @@ LIT_rate_data %>%
 ```
 
 # Countries with High Female Literacy rate
-
 ```{r message = FALSE}
 
-LITdata %>% mutate(diff = Male - Female) %>% 
+LITdata %>% 
+  mutate(diff = Male - Female) %>% 
   arrange(diff) %>% 
   select(Country, Male, Female, diff) %>% 
-  slice(1-5) %>%
-  rename("Difference" = diff)
+  slice(1:10) %>%
+  rename("Difference" = diff) %>%
+  kable() %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "center")
 
 ```
+
+
 # Countries with Low Female Literacy rate
-
 ```{r message = FALSE}
-
-LITdata %>% mutate(diff = Male - Female) %>%   
-  arrange(-diff) %>%   
+LITdata %>% 
+  mutate(diff = Male - Female) %>% 
+  arrange(-diff) %>% 
   select(Country, Male, Female, diff) %>% 
-  slice(1-5) %>%
-  rename("Difference" = diff)
+  slice(1:10) %>%
+  rename("Difference" = diff) %>%
+  kable() %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "center")
 
 ```
 
@@ -324,6 +326,7 @@ ggplotly(p)
 
 
 # Summary
+- Gap between male and female is consistent over the years
 - More programs are required for females  &
 - 65+ age group 
 - Data collection is inconsistent from year to year 
