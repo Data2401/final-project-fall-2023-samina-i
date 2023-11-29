@@ -3,8 +3,7 @@ title: "Youth & Adult Literacy Rates from 2010 to 2018"
 author: "Samina Issa - Fall 2023"
 date: "2023-11-29"
 output: slidy_presentation
-includes:
-      in_header: Pic1.jpg
+  
 ---
 
 ```{r setup, include=FALSE}
@@ -16,13 +15,19 @@ knitr::opts_chunk$set(echo = F)
 [Youth & Adult Literacy Rates Datasets Link](https://www.kaggle.com/datasets/thedevastator/youth-adult-literacy-rates-in-2019/data)
 
 
-The data is a CSV from Kaggle. This dataset contains data on literacy rates for youth and adults in various regions and countries.  
+The data is a CSV from Kaggle. This dataset contains data on literacy rates for youth and adults in various regions and countries.  It has two csv files. 
+
+The dataset can be used to help policy-makers understand where interventions are needed to improve literacy rates
+
+
 
 # 2. Analysing:
-1. 
-2. 
-3. 
-4.
+* Comparing the literacy rates of different 
+  - regions
+  - countries
+  - age groups
+  - genders
+
 
 ## 3. Why Literacy Project?
 
@@ -39,6 +44,7 @@ Growing up, many people in my community, neighborhood and family were not able t
 
 ```{r message = FALSE}
 #install.packages("tidyverse")
+#install.packages("knitr")
 
 #using this for data manipulation
 library(dplyr)
@@ -63,9 +69,6 @@ glimpse(LIT_rate_data)
 LITdata <- read_csv("Adults_15YrsAndUp.csv")
 glimpse(LITdata)
 
-
-#LIT_rate_data %>% arrange(desc(Year), desc(Country))
-
 ```
 # 6. Countries with Higest Literacy rate
 
@@ -73,10 +76,11 @@ glimpse(LITdata)
 
 LIT_rate_data %>% 
   group_by(Country) %>% 
-  summarise(mean_lit_rate = mean(`Literacy rate`)) %>% arrange(desc(mean_lit_rate))
-
-
-
+  summarise(mean_lit_rate = mean(`Literacy rate`)) %>% 
+  arrange(desc(mean_lit_rate)) %>% 
+  slice(1:10) %>%
+  rename("Country Name" = Country, "Mean Literacy Rate" = mean_lit_rate) %>%
+  knitr::kable() 
 
 ```
 # 7. Countries with Lowest Literacy rate
@@ -86,7 +90,10 @@ LIT_rate_data %>%
 LIT_rate_data %>% 
   group_by(Country) %>% 
   summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
-  arrange(mean_lit_rate)
+  arrange(mean_lit_rate) %>% 
+  slice(1:10) %>%
+  rename("Country Name" = Country, "Mean Literacy Rate" = mean_lit_rate) %>%
+  knitr::kable()
 
 
 ```
@@ -96,30 +103,45 @@ LIT_rate_data %>%
 
 ```{r message = FALSE}
 
-LITdata %>% mutate(diff = Male - Female) %>% arrange(diff) %>% select(Country, Male, Female, diff)
+LITdata %>% mutate(diff = Male - Female) %>% 
+  arrange(diff) %>% 
+  select(Country, Male, Female, diff) %>% 
+  slice(1-5) %>%
+  rename("Difference" = diff)
 
 ```
 # 9. Countries with Low Female Literacy rate
 
 ```{r message = FALSE}
 
-LITdata %>% mutate(diff = Male - Female) %>% arrange(-diff) %>% select(Country, Male, Female, diff)
-
-
+LITdata %>% mutate(diff = Male - Female) %>%   
+  arrange(-diff) %>%   
+  select(Country, Male, Female, diff) %>% 
+  slice(1-5) %>%
+  rename("Difference" = diff)
 
 ```
 
-# 10. Literacy rate by Age
+# 10. Comparing the literacy rates of different age groups by year
 
 ```{r message = FALSE}
 
-p <- ggplot(data = LIT_rate_data) + 
-  geom_bar(mapping = aes(x = Year, fill = Age), position = "dodge")
+LIT_rate_data %>%
 
-ggplotly(p)
+  group_by(Age, Year) %>%
 
-p <- ggplot(data = LIT_rate_data) + 
-  geom_col(mapping = aes(x = Age, y = `Literacy rate`, fill = Age))
+  summarize(mean_lit_rate = mean(`Literacy rate`)) %>% 
+
+  ggplot() + geom_col(mapping = aes(y  = mean_lit_rate, x = Year, fill = Age), position = "dodge")+ labs(title = "Literacy rate by Age")
+
+
+ 
+
+p <- ggplot(data = LIT_rate_data) +
+
+  geom_col(mapping = aes(x = Age, y = `Literacy rate`, fill = Age)) + labs(title = "Average literacy rate by Age")
+
+ 
 
 ggplotly(p)
 
@@ -129,33 +151,22 @@ ggplotly(p)
 
 
 ```{r message = FALSE}
-#Literacy rate Country Table
-#table(LIT_rate_data$Country)
 
+LIT_rate_data %>%
 
-# rate for female in each region
-f <- LIT_rate_data %>% 
-        filter(Gender == "female") %>% 
-        ggplot(aes(x = reorder(Region, `Literacy rate`), y = `Literacy rate`))
+         filter(Gender %in% c("male", "female")) %>% group_by(Gender, Region) %>% summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
 
-f + 
-  geom_col() + 
-  coord_flip() + labs(title = "Female Literacy rate by region")
+ggplot() +
 
-# rate for male in each region
-m <- LIT_rate_data %>% 
-        filter(Gender == "male") %>% 
-        ggplot(aes(x = reorder(Region, `Literacy rate`), y = `Literacy rate`))+ 
-        geom_col() + 
-        coord_flip() + labs(title = "Male Literacy rate by region")
+  geom_col(mapping = aes(x = reorder(Region, mean_lit_rate), y = mean_lit_rate, fill = Gender), position = "dodge")+ coord_flip()
 
-m
-
-
+ 
 LIT_rate_data %>% 
   group_by(Region) %>% 
   summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
-  arrange(-mean_lit_rate)
+  arrange(-mean_lit_rate) %>%
+  rename("Mean Literacy Rate" = mean_lit_rate) %>%
+  knitr::kable()
 
 
 ```
@@ -163,7 +174,7 @@ LIT_rate_data %>%
 
 # 12. Measuring the progress of a Region's literacy rate over time
 
-```{r message = FALSE}
+```{r message = FALSE, fig.width=12}
 
 p <- LIT_rate_data %>%
   group_by(Region, Year) %>%
@@ -183,7 +194,10 @@ ggplotly(p)
 
 
 
-#LIT_rate_data %>% mutate(variance = Male - Female) %>% arrange(-diff) %>% select(Country, Male, Female, diff)
+#LIT_rate_data %>% filter(Region == "Sub-Saharan Africa") %>% 
+ # group_by(Age, Year) %>%
+  #summarise(mean_literacy = mean(`Literacy rate`, na.rm = TRUE)) %>%
+  #select(Country, Year, mean_literacy )
 
 ```
 
