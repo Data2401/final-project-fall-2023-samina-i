@@ -16,25 +16,15 @@ knitr::opts_chunk$set(echo = F)
 [Youth & Adult Literacy Rates Datasets Link](https://www.kaggle.com/datasets/thedevastator/youth-adult-literacy-rates-in-2019/data)
 
 
-The data is a CSV from Kaggle. This dataset contains data on literacy rates for youth and adults in various regions and countries.  It has two csv files. 
+Literacy rates refer to the percentage of individuals aged 15 and above who can read and write with understanding a short, simple statement on their everyday life. The dataset, available on Kaggle as two CSV files, delves into the literacy rates among youth and adults across diverse regions and countries. This extensive repository serves as a valuable resource for comprehending the literacy landscape, offering insights into various demographics such as age groups, genders, and geographical areas. Its multifaceted nature enables in-depth analyses, facilitating comparisons among regions, countries, and demographic segments. The dataset's potential extends beyond raw figures; it stands as a crucial tool for policymakers, illustrating areas requiring targeted interventions to support literacy rates.
 
-The dataset can be used to help policy-makers understand where interventions are needed to improve literacy rates
-
-
-
-# Analysing:
-* Comparing the literacy rates of different 
-  - regions
-  - countries
-  - age groups
-  - genders
+I chose this data because I've seen people around me who struggle with reading and writing. It made me curious about how things are now. I hope it can show where we need to do more to help people learn these important skills better.
 
 
-## Why Literacy Project?
 
-Growing up, many people in my community, neighborhood and family were not able to read and write. So I wanted to see the literacy rate in recent years and picked it for the project
 
-# Library Loading 
+# Data Preparation
+#### Load packages to be used
 - **library(dplyr):** using for data manipulation
 
 - **library(tidyverse):** using to transform and better present data
@@ -63,9 +53,10 @@ library(kableExtra)
 library(knitr)
 ```
 
-# Reading in Data 
+#### Reading in Data 
+Reads csv files from a sub-folder to be examine & glimpse of data of 2 csv files
 ```{r message = FALSE}
-# Read CSV file from a subfolder
+# Read CSV file from a subfolder to be examine
 
 LIT_rate_data <- read_csv("Literacy rates.csv")
 glimpse(LIT_rate_data)
@@ -75,7 +66,9 @@ glimpse(LITdata)
 
 ```
 
-# Countries with Higest Literacy rate
+#### Countries with Higest Literacy rate
+Following table provides the highest literacy rates of top 10 countries. 
+
 ```{r message = FALSE}
 
 LIT_rate_data %>% 
@@ -89,7 +82,10 @@ LIT_rate_data %>%
 
 ```
 
-# Countries with Lowest Literacy rate
+#### Countries with Lowest Literacy rate
+Following table provides the lowest literacy rates of 10 countries. 
+
+
 ```{r message = FALSE}
 
 LIT_rate_data %>% 
@@ -103,7 +99,10 @@ LIT_rate_data %>%
 
 
 ```
+This shows that countries need more support to increase the literacy rate.
 
+The analysis of the literacy rates based on age groups reveals a significant correlation between age and literacy across various regions and countries. The data illustrates that the age factor plays a crucial role in determining literacy levels, especially evident in the consistently lower literacy rates among individuals aged 65 and above compared to other age brackets. 
+The dataset further highlights a categorization based on age groups, specifically focusing on the 15+ category, which encompasses individuals aged 15 and above. The variability in how countries collect and present their data regarding literacy rates is evident in the diverse age ranges used for data input. Some nations might report literacy rates under the broad category of 15+, while others might provide a breakdown into more specific age groups like 15-24 or 25-64.
 
 # Literacy rates of different age groups by year
 ```{r message = FALSE}
@@ -118,6 +117,7 @@ LIT_rate_data %>%
 ```
 
 # Mean literacy rates by age group
+The chart below shows that on average 64 and younger have higher literacy rate. 
 ```{r message = FALSE}
  
 
@@ -129,6 +129,8 @@ ggplotly(p)
 
 ```
 
+
+Now, lets examine and break down by region. Chart below represent the trend over the years by region and it shows that few region's data are all over the place.
 
 # Progress of a Region's literacy rate over time
 ```{r message = FALSE}
@@ -327,8 +329,9 @@ ggplotly(p)
 
 
 # Summary
-- Gap between male and female is consistent over the years
-- More programs are required for females  &
-- 65+ age group 
-- Data collection is inconsistent from year to year 
-- Need more data to compare the regions or countries
+
+The gender gap in literacy rates has been persistently evident over the years, showing a consistent gap between males and females. This longstanding trend underscores the necessity for targeted initiatives aimed at literacy among female. 
+Additionally, there appears to be a crucial need for literacy programs specifically tailored for individuals aged 65 and above, acknowledging their unique learning needs and ensuring inclusivity across all age groups.
+One fundamental challenge highlighted in the dataset analysis is the inconsistency in data collection methods and accuracy across different years. This inconsistency poses a significant barrier in making accurate year-to-year comparisons and drawing conclusive insights. To facilitate more reliable and comprehensive analyses, there is a pressing need for standardized data collection protocols to be implemented consistently across regions and countries.
+
+
