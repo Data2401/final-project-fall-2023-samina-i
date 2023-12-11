@@ -1,0 +1,20 @@
+---
+title: "Final Report PDF"
+author: "Samina Issa"
+date: "2023-12-11"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+[Youth & Adult Literacy Rates Datasets Link](https://www.kaggle.com/datasets/thedevastator/youth-adult-literacy-rates-in-2019/data)
+
+
+Literacy rates refer to the percentage of individuals aged 15 and above who can read and write with understanding a short, simple statement on their everyday life. The dataset, available on Kaggle as two csv files, delves into the literacy rates among youth and adults across diverse regions and countries. This extensive repository serves as a valuable resource for comprehending the literacy landscape, offering insights into various demographics such as age groups, genders, and geographical areas. Its multifaceted nature enables in-depth analysis, facilitating comparisons among regions, countries, and demographic segments. The dataset's potential extends beyond raw figures; it stands as a crucial tool for policymakers, illustrating areas requiring targeted interventions to support literacy rates.
+
+I chose this data because I've seen people around me who struggle with reading and writing. It made me curious about how things are now. I hope it can show where we need to do more to help people learn these important skills better.
+
