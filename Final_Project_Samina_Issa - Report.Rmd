@@ -66,7 +66,7 @@ glimpse(LITdata)
 
 ```
 
-#### Countries with Higest Literacy rate
+### Countries with Higest Literacy rate
 Following table provides the highest literacy rates of top 10 countries. 
 
 ```{r message = FALSE}
@@ -82,7 +82,7 @@ LIT_rate_data %>%
 
 ```
 
-#### Countries with Lowest Literacy rate
+### Countries with Lowest Literacy rate
 Following table provides the lowest literacy rates of 10 countries. 
 
 
@@ -99,10 +99,11 @@ LIT_rate_data %>%
 
 
 ```
-This shows that countries need more support to increase the literacy rate.
+The comparison of the highest literacy rates among the top 10 countries and the lowest literacy rates among another set of 10 countries highlights a stark contrast in educational achievements globally. The disparity between these two groups underscores the need for increased support and focused efforts to uplift literacy rates, particularly in regions or countries with lower rates.
+Examining the top 10 countries with the highest literacy rates offers valuable insight and can provide valuable benchmarks and best practices that could potentially be adopted or adapted by other countries improve their literacy rates.
+The identification of the bottom 10 countries in terms of literacy rates serves as a crucial reminder of the challenges faced by these regions. It emphasizes the urgency of implementing targeted interventions and comprehensive educational initiatives to uplift literacy levels.
 
-The analysis of the literacy rates based on age groups reveals a significant correlation between age and literacy across various regions and countries. The data illustrates that the age factor plays a crucial role in determining literacy levels, especially evident in the consistently lower literacy rates among individuals aged 65 and above compared to other age brackets. 
-The dataset further highlights a categorization based on age groups, specifically focusing on the 15+ category, which encompasses individuals aged 15 and above. The variability in how countries collect and present their data regarding literacy rates is evident in the diverse age ranges used for data input. Some nations might report literacy rates under the broad category of 15+, while others might provide a breakdown into more specific age groups like 15-24 or 25-64.
+
 
 # Literacy rates of different age groups by year
 ```{r message = FALSE}
@@ -129,9 +130,10 @@ ggplotly(p)
 
 ```
 
+The analysis of the literacy rates based on age groups reveals a significant correlation between age and literacy across various regions and countries. The data illustrates that the age factor plays a crucial role in determining literacy levels, especially evident in the consistently lower literacy rates among individuals aged 65 and above compared to other age brackets. 
+The dataset further highlights a categorization based on age groups, specifically focusing on the 15+ category, which encompasses individuals aged 15 and above. The variability in how countries collect and present their data regarding literacy rates is evident in the diverse age ranges used for data input. Some nations might report literacy rates under the broad category of 15+, while others might provide a breakdown into more specific age groups like 15-24 or 25-64.
 
-Now, lets examine and break down by region. Chart below represent the trend over the years by region and it shows that few region's data are all over the place.
-
+Now, lets examine and break down by region. 
 # Progress of a Region's literacy rate over time
 ```{r message = FALSE}
 library(plotly)
@@ -148,6 +150,9 @@ ggplotly(p)
 
 ```
 
+Analyzing literacy rates by region reveals intriguing trends, yet it also exposes inconsistencies in data reliability, particularly in certain regions where the data fluctuates significantly from year to year. This inconsistency poses a challenge when attempting to draw consistent conclusions or trends for these regions.
+
+Breaking down the data into charts for each region allows for a more granular examination, highlighting distinct patterns and fluctuations. For instance, regions like Sub-Saharan Africa exhibit considerable variability in literacy rates from year to year. 
 
 # Progress of a Region's literacy rate over time
 ```{r message = FALSE, fig.width=12}
@@ -164,6 +169,7 @@ ggplotly(p)
 
 ```
 
+while regional breakdowns offer valuable insights into literacy rate trends, the variability and inconsistency within certain regions underscore the need for more detailed analyses and a comprehensive understanding of the underlying factors contributing to these fluctuations.
 
 # Literacy rates by country of Sub-Saharan Africa Region
 ```{r message = FALSE}
