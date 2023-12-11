@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = F)
 [Youth & Adult Literacy Rates Datasets Link](https://www.kaggle.com/datasets/thedevastator/youth-adult-literacy-rates-in-2019/data)
 
 
-Literacy rates refer to the percentage of individuals aged 15 and above who can read and write with understanding a short, simple statement on their everyday life. The dataset, available on Kaggle as two CSV files, delves into the literacy rates among youth and adults across diverse regions and countries. This extensive repository serves as a valuable resource for comprehending the literacy landscape, offering insights into various demographics such as age groups, genders, and geographical areas. Its multifaceted nature enables in-depth analyses, facilitating comparisons among regions, countries, and demographic segments. The dataset's potential extends beyond raw figures; it stands as a crucial tool for policymakers, illustrating areas requiring targeted interventions to support literacy rates.
+Literacy rates refer to the percentage of individuals aged 15 and above who can read and write with understanding a short, simple statement on their everyday life. The dataset, available on Kaggle as two csv files, delves into the literacy rates among youth and adults across diverse regions and countries. This extensive repository serves as a valuable resource for comprehending the literacy landscape, offering insights into various demographics such as age groups, genders, and geographical areas. Its multifaceted nature enables in-depth analysis, facilitating comparisons among regions, countries, and demographic segments. The dataset's potential extends beyond raw figures; it stands as a crucial tool for policymakers, illustrating areas requiring targeted interventions to support literacy rates.
 
 I chose this data because I've seen people around me who struggle with reading and writing. It made me curious about how things are now. I hope it can show where we need to do more to help people learn these important skills better.
 
@@ -24,7 +24,7 @@ I chose this data because I've seen people around me who struggle with reading a
 
 
 # Data Preparation
-#### Load packages to be used
+### Load packages to be used
 - **library(dplyr):** using for data manipulation
 
 - **library(tidyverse):** using to transform and better present data
@@ -53,7 +53,7 @@ library(kableExtra)
 library(knitr)
 ```
 
-#### Reading in Data 
+### Reading in Data 
 Reads csv files from a sub-folder to be examine & glimpse of data of 2 csv files
 ```{r message = FALSE}
 # Read CSV file from a subfolder to be examine
@@ -66,7 +66,7 @@ glimpse(LITdata)
 
 ```
 
-### Countries with Higest Literacy rate
+## Countries with Higest Literacy rate
 Following table provides the highest literacy rates of top 10 countries. 
 
 ```{r message = FALSE}
@@ -82,7 +82,7 @@ LIT_rate_data %>%
 
 ```
 
-### Countries with Lowest Literacy rate
+## Countries with Lowest Literacy rate
 Following table provides the lowest literacy rates of 10 countries. 
 
 
@@ -105,7 +105,7 @@ The identification of the bottom 10 countries in terms of literacy rates serves 
 
 
 
-# Literacy rates of different age groups by year
+## Literacy rates of different age groups by year
 ```{r message = FALSE}
 
 LIT_rate_data %>%
@@ -117,7 +117,7 @@ LIT_rate_data %>%
 
 ```
 
-# Mean literacy rates by age group
+## Mean literacy rates by age group
 The chart below shows that on average 64 and younger have higher literacy rate. 
 ```{r message = FALSE}
  
@@ -134,7 +134,8 @@ The analysis of the literacy rates based on age groups reveals a significant cor
 The dataset further highlights a categorization based on age groups, specifically focusing on the 15+ category, which encompasses individuals aged 15 and above. The variability in how countries collect and present their data regarding literacy rates is evident in the diverse age ranges used for data input. Some nations might report literacy rates under the broad category of 15+, while others might provide a breakdown into more specific age groups like 15-24 or 25-64.
 
 Now, lets examine and break down by region. 
-# Progress of a Region's literacy rate over time
+
+## Progress of a Region's literacy rate over time
 ```{r message = FALSE}
 library(plotly)
 p <- ggplot(LIT_rate_data %>% 
@@ -154,7 +155,7 @@ Analyzing literacy rates by region reveals intriguing trends, yet it also expose
 
 Breaking down the data into charts for each region allows for a more granular examination, highlighting distinct patterns and fluctuations. For instance, regions like Sub-Saharan Africa exhibit considerable variability in literacy rates from year to year. 
 
-# Progress of a Region's literacy rate over time
+## Progress of a Region's literacy rate over time
 ```{r message = FALSE, fig.width=12}
 
 p <- LIT_rate_data %>%
@@ -169,9 +170,12 @@ ggplotly(p)
 
 ```
 
-while regional breakdowns offer valuable insights into literacy rate trends, the variability and inconsistency within certain regions underscore the need for more detailed analyses and a comprehensive understanding of the underlying factors contributing to these fluctuations.
+while regional breakdowns offer valuable insights into literacy rate trends, the variability and inconsistency within certain regions underscore the need for more detailed analysis and a comprehensive understanding of the underlying factors contributing to these fluctuations.
 
-# Literacy rates by country of Sub-Saharan Africa Region
+
+Analysis of Sub-Saharan Africa Region region in detail.The chart below show the countries of Sub-Saharan Africa Region literacy rate over time. 
+
+## Literacy rates by country of Sub-Saharan Africa Region
 ```{r message = FALSE}
 library(plotly)
 
@@ -186,20 +190,9 @@ p <- ggplot(LIT_rate_data %>%
 
 ggplotly(p)
 ```
+Examining the literacy rates in the Sub-Saharan Africa region provides understanding of the challenges and complexities within this diverse area. The chart illustrating literacy rates over time in various countries within the region reveals a notable lack of consistency in data availability from year to year. This inconsistency hampers the ability to establish clear trends or draw concrete conclusions about the region's overall literacy landscape.For a more thorough understanding of literacy trends in Sub-Saharan Africa, a deeper analysis of countries with consistent data points could be beneficial. 
 
-# Sub-Saharan Africa Region
-```{r message = FALSE}
-
-LIT_rate_data %>%
-  filter(Region == "Sub-Saharan Africa") %>%
-  group_by(Country, Year) %>%
-  summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
-  rename("Country Name" = Country, "Mean Literacy Rate" = mean_lit_rate) %>%
-  kable("html", digits = 3) %>%
-  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "left") %>%
-  add_header_above(c(" " = 1, "Literacy Rate Analysis" = 2))
-
-```
+So, let pick year 2011 and 2013, as these are the lowest and highest literacy point of the region. 
 
 # Literacy rates of Year 2011 & 2013 of Sub-Saharan Africa Region
 ```{r message = FALSE}
@@ -227,38 +220,9 @@ LIT_rate_data %>%
 
 ```
 
-# Literacy rates of countries of Eastern and South-Eastern Asia Region
-```{r message = FALSE}
+Indeed, analyzing the disparity between the lowest and highest literacy points in 2011 and 2013 within the Sub-Saharan Africa region highlights the inconsistency prevalent in literacy data among countries. This fluctuation underscores the lack of consistent progress or a stable trajectory in literacy rates across the region during this period.
 
-
-p <- ggplot(LIT_rate_data %>% 
-              filter(Gender == "female", Region == "Eastern and South-Eastern Asia") %>% 
-              group_by(Year, Country) %>% 
-              summarise(Lit_mean = mean(na.omit(`Literacy rate`))), 
-            aes(x = Year, y = Lit_mean, color = Country)) + 
-  geom_line() + 
-  geom_point() +
-  labs(title = "Eastern and South-Eastern Asia Region's literacy rate over time", x = "Year", y = "Mean Literacy rate")
-
-ggplotly(p)
-```
-
-# Eastern and South-Eastern Asia Region
-```{r message = FALSE}
-
-
-LIT_rate_data %>% 
-  filter(Region == "Eastern and South-Eastern Asia") %>% 
-  group_by(Country, Year) %>% 
-  summarise(mean_lit_rate = mean(`Literacy rate`)) %>%
-  rename("Country Name" = Country, "Mean Literacy Rate" = mean_lit_rate) %>%
-  kable("html", digits = 3) %>%
-  kable_styling(full_width = FALSE, bootstrap_options = "striped", position = "left") %>%
-  add_header_above(c(" " = 1, "Literacy Rate Analysis" = 2))
-
-```
-
-
+Lets analyze the literacy rate of male and female by region and by over time. 
 # Male & Female Literacy rate by region
 ```{r message = FALSE}
 
@@ -285,6 +249,9 @@ LIT_rate_data %>%
 
 ```
 
+The comparison of male and female literacy rates across different regions highlights notable differences and trends in educational success between genders. The table and corresponding chart depicting male and female literacy rates over time underscore a consistent gap between the literacy rates of males and females across various regions.
+
+
 # Countries with High Female Literacy rate
 ```{r message = FALSE}
 
@@ -299,6 +266,7 @@ LITdata %>%
 
 ```
 
+Exploring the countries with high female literacy rates reveals the success stories in gender parity within education. Malta emerges as the leading nation with a notably higher female literacy rate. Following closely are countries like Mongolia, Seychelles, Eswatini, and Uruguay, showcasing strides in promoting female education.
 
 # Countries with Low Female Literacy rate
 ```{r message = FALSE}
@@ -313,6 +281,7 @@ LITdata %>%
 
 ```
 
+Conversely, examining countries with low female literacy rates uncovers significant challenges, with Afghanistan topping the list, trailed by Central African Republic and Benin, among others. These countries face substantial hurdles in ensuring equitable educational opportunities for females, reflecting the pressing need for targeted interventions and improved educational initiatives.
 
 # Male & Female Literacy rate over time
 
@@ -331,13 +300,15 @@ ggplotly(p)
 
 ```
 
+The chart illustrating male and female literacy rates over time emphasizes a consistent gender gap persisting across the years. This unchanging gap signifies the necessity for increased efforts specifically tailored towards enhancing female literacy rates. Implementing dedicated programs and policies aimed at improving female education is crucial to narrow this persistent gender divide in literacy rates.
 
+The comparison of male and female literacy rates across regions highlights both success stories and challenges. While certain countries demonstrate impressive progress in achieving gender parity in education, others grapple with substantial gender gaps. 
 
 
 # Summary
 
 The gender gap in literacy rates has been persistently evident over the years, showing a consistent gap between males and females. This longstanding trend underscores the necessity for targeted initiatives aimed at literacy among female. 
-Additionally, there appears to be a crucial need for literacy programs specifically tailored for individuals aged 65 and above, acknowledging their unique learning needs and ensuring inclusivity across all age groups.
-One fundamental challenge highlighted in the dataset analysis is the inconsistency in data collection methods and accuracy across different years. This inconsistency poses a significant barrier in making accurate year-to-year comparisons and drawing conclusive insights. To facilitate more reliable and comprehensive analyses, there is a pressing need for standardized data collection protocols to be implemented consistently across regions and countries.
+Additionally, the literacy rates within the 15-64 age group consistently showcase higher levels compared to other age brackets. There appears to be a crucial need for literacy programs specifically tailored for individuals aged 65 and above, acknowledging their unique learning needs and ensuring inclusivity across all age groups. 
+One fundamental challenge highlighted in the dataset analysis is the inconsistency in data collection methods and accuracy across different years. This inconsistency poses a significant barrier in making accurate year-to-year comparisons and drawing conclusive insights. To facilitate more reliable and comprehensive analysis, there is a pressing need for standardized data collection protocols to be implemented consistently across regions and countries.
 
 
